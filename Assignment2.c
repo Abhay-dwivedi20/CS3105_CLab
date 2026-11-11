@@ -1,5 +1,3 @@
-#include <stdio.h>
-#include <ctype.h>
 
 // 2.1
 //  int main()
@@ -235,37 +233,108 @@
 // }
 
 // 2.11
+// int main()
+// {
+//     int number;
+//     printf("Enter a number: ");
+//     scanf("%d", &number);
+//     switch (number)
+//     {
+//     case 1:
+//         printf("monday\n");
+//         break;
+//     case 2:
+//         printf("tuesday\n");
+//         break;
+//     case 3:
+//         printf("wednesday\n");
+//         break;
+//     case 4:
+//         printf("thursday\n");
+//         break;
+//     case 5:
+//         printf("friday\n");
+//         break;
+//     case 6:
+//         printf("saturday\n");
+//         break;
+//     case 7:
+//         printf("sunday\n");
+//         break;
+//     default:
+//         printf("Invalid input. Please enter a number between 1 and 7.\n");
+//         break;
+//     }
+//     return 0;
+// }
+
+#include <stdio.h>
+#include <string.h>
+
+struct Student
+{
+    int roll_no;
+    char name[100];
+    float marks_in_maths, marks_in_py, marks_in_chem;
+    float total_marks;
+};
+
 int main()
 {
-    int number;
-    printf("Enter a number: ");
-    scanf("%d", &number);
-    switch (number)
+    struct Student s[100], temp;
+    int n;
+
+    printf("Enter number of students: ");
+    scanf("%d", &n);
+
+    if (n < 1 || n > 100)
     {
-    case 1:
-        printf("monday\n");
-        break;
-    case 2:
-        printf("tuesday\n");
-        break;
-    case 3:
-        printf("wednesday\n");
-        break;
-    case 4:
-        printf("thursday\n");
-        break;
-    case 5:
-        printf("friday\n");
-        break;
-    case 6:
-        printf("saturday\n");
-        break;
-    case 7:
-        printf("sunday\n");
-        break;
-    default:
-        printf("Invalid input. Please enter a number between 1 and 7.\n");
-        break;
+        printf("Invalid number of students!");
+        return 1;
     }
+
+    // Input and calculate total marks
+    for (int i = 0; i < n; i++)
+    {
+        printf("\nEnter details for student %d:\n", i + 1);
+
+        printf("Roll Number: ");
+        scanf("%d", &s[i].roll_no);
+
+        printf("Name: ");
+        scanf("%99s", s[i].name);
+
+        printf("Marks (Maths, Python, Chemistry): ");
+        scanf("%f %f %f", &s[i].marks_in_maths,
+              &s[i].marks_in_py, &s[i].marks_in_chem);
+
+        s[i].total_marks = s[i].marks_in_maths +
+                           s[i].marks_in_py +
+                           s[i].marks_in_chem;
+    }
+
+    // Sort in descending order of total marks
+    for (int i = 0; i < n - 1; i++)
+    {
+        for (int j = 0; j < n - i - 1; j++)
+        {
+            if (s[j].total_marks < s[j + 1].total_marks)
+            {
+                temp = s[j];
+                s[j] = s[j + 1];
+                s[j + 1] = temp;
+            }
+        }
+    }
+
+    // Display sorted student records
+    printf("\nStudents sorted by total marks (Highest to Lowest):\n");
+
+    for (int i = 0; i < n; i++)
+    {
+        printf("\nRank: %d | Roll No: %d | Name: %s | Total Marks: %.2f\n",
+               i + 1, s[i].roll_no, s[i].name, s[i].total_marks);
+    }
+
     return 0;
 }
